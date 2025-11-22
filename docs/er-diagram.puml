@@ -1,0 +1,137 @@
+@startuml
+title Diagrama ER - Banco de Dados db_sprint_mind
+
+entity "tbl_departamento" as Departamento {
+  * id_departamento : INT <<PK>>
+  --
+  supervisor_departamento : VARCHAR
+  desc_departamento : VARCHAR
+  nome_departamento : VARCHAR
+}
+
+entity "tbl_usuario" as Usuario {
+  * cpf_usuario : CHAR(11) <<PK>>
+  --
+  departamento_usuario : VARCHAR
+  squad_usuario : INT
+  data_inicio_empresa_usuario : DATE
+  senha_usuario : VARCHAR
+  email_usuario : VARCHAR
+  cargo_usuario : VARCHAR
+  dt_nascimento_usuario : DATE
+}
+
+entity "tbl_funcionario" as Funcionario {
+  * cpf_usuario : CHAR(11) <<PK, FK>>
+  --
+  turno_trabalho : VARCHAR
+  funcao_funcionario : VARCHAR
+}
+
+entity "tbl_gestor" as Gestor {
+  * cpf_usuario : CHAR(11) <<PK, FK>>
+  --
+  funcao_scrum_gestor : VARCHAR
+}
+
+entity "tbl_squad" as Squad {
+  * id_squad : INT <<PK>>
+  --
+  membros_squad : INT
+  desc_squad : VARCHAR
+  qtd_funcionarios : INT
+  nome_squad : VARCHAR
+  id_departamento : INT <<FK>>
+  id_gestor : CHAR(11) <<FK>>
+}
+
+entity "tbl_participacaoSquad" as ParticipacaoSquad {
+  * id_squad : INT <<PK, FK>>
+  * cpf_usuario : CHAR(11) <<PK, FK>>
+}
+
+entity "tbl_release" as Release {
+  * id_release : INT <<PK>>
+  --
+  status_release : VARCHAR
+  dataInicio_release : DATE
+  dataFim_release : DATE
+  nome_release : VARCHAR
+}
+
+entity "tbl_sprint" as Sprint {
+  * id_sprint : INT <<PK>>
+  --
+  status_sprint : VARCHAR
+  id_release : INT <<FK>>
+  dataFim_sprint : DATE
+  dataInicio_sprint : DATE
+  nome_sprint : VARCHAR
+}
+
+entity "tbl_checkIn" as CheckIn {
+  * id_checkin : INT <<PK>>
+  --
+  comentarioAdicional_usuario : VARCHAR
+  sentimento_checkin : VARCHAR
+  cargaTrabalho_checkin : INT
+  foco_checkin : VARCHAR
+  estresse_checkin : INT
+  energia_checkin : INT
+  humorGeral_checkin : VARCHAR
+  dtAthora_checkin : DATETIME
+  cpf_usuario : CHAR(11) <<FK>>
+}
+
+entity "tbl_checkinSprint" as CheckinSprint {
+  * id_checkin : INT <<PK, FK>>
+  * id_sprint : INT <<PK, FK>>
+}
+
+entity "tbl_dashboard" as Dashboard {
+  * id_dashboard : INT <<PK>>
+  --
+  ultimaAtualizacao_dashboard : DATETIME
+  riscosAtivos_dashboard : INT
+  totalCheckin_dashboard : INT
+  tendenciaEstresse_dashboard : VARCHAR
+  mediaHumor_dashboard : DECIMAL
+  id_departamento : INT <<FK>>
+}
+
+entity "tbl_visualiza" as Visualiza {
+  * cpf_usuario : CHAR(11) <<PK, FK>>
+  * id_dashboard : INT <<PK, FK>>
+}
+
+entity "tbl_alerta" as Alerta {
+  * id_alerta : INT <<PK>>
+  --
+  qtdUsuariosProb_alerta : INT
+  id_release : INT <<FK>>
+  id_sprint : INT <<FK>>
+  data_alerta : DATE
+  mensagem_alerta : VARCHAR
+  nivel_alerta : VARCHAR
+  tipo_alerta : VARCHAR
+}
+
+Usuario ||--o{ Funcionario : "é"
+Usuario ||--o{ Gestor : "é"
+Departamento ||--o{ Squad : "possui"
+Gestor ||--o{ Squad : "gerencia"
+Squad ||--o{ ParticipacaoSquad : "tem"
+Usuario ||--o{ ParticipacaoSquad : "participa"
+Release ||--o{ Sprint : "agrupar"
+Sprint ||--o{ CheckinSprint : "tem"
+CheckIn ||--o{ CheckinSprint : "associa"
+Usuario ||--o{ CheckIn : "realiza"
+Departamento ||--o{ Dashboard : "monitora"
+Usuario ||--o{ Visualiza : "visualiza"
+Dashboard ||--o{ Visualiza : "é visto por"
+Release ||--o{ Alerta : "relaciona"
+Sprint ||--o{ Alerta : "relaciona"
+
+@enduml
+
+

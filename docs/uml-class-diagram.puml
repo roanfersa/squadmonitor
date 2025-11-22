@@ -1,0 +1,117 @@
+@startuml
+title Diagrama de Classes - Monitor de Bem-Estar do Time Scrum
+
+abstract class Usuario {
+    - String cpfCriptografado
+    - String email
+    - Date dataNascimento
+    - String cargo
+    - String senha
+    - Date dataEntradaEmpresa
+    - Departamento departamento
+    + realizarCheckinEmocional()
+    + visualizarMeusCheckins()
+}
+
+class Funcionario {
+    - String funcaoScrum
+    - String turnoTrabalho
+    - List<Squad> squads
+    + realizarCheckinEmocional()
+    + visualizarMeusCheckins()
+}
+
+class Gestor {
+    - String funcao
+    - List<Squad> squadsResponsaveis
+    + visualizarDashboardSquad()
+    + receberAlertaRisco()
+    + gerarRelatorioClima()
+    + realizarCheckinEmocional()
+    + visualizarMeusCheckins()
+}
+
+class CheckinEmocional {
+    - int id
+    - LocalDateTime dataHora
+    - int humorGeral
+    - int energia
+    - int estresse
+    - int foco
+    - int sono
+    - int cargaTrabalho
+    - String sentimentoDominante
+    - String comentarioOpcional
+}
+
+class Dashboard {
+    - double mediaHumorGeral
+    - double tendenciaEstresse
+    - int totalCheckins
+    - int riscosAtivos
+    - LocalDateTime ultimaAtualizacao
+    + atualizarDados(Squad squad)
+}
+
+class Alerta {
+    - int id
+    - String tipo
+    - String nivel
+    - String mensagem
+    - LocalDateTime dataGeracao
+}
+
+class Squad {
+    - int id
+    - String descricao
+    - Gestor gestor
+    - Departamento departamento
+    - List<Funcionario> membros
+}
+
+class Sprint {
+    - int id
+    - String nome
+    - LocalDate dataInicio
+    - LocalDate dataFim
+}
+
+class Release {
+    - int id
+    - String nome
+    - String periodo
+    - LocalDate dataInicio
+    - LocalDate dataFim
+}
+
+class Departamento {
+    - int id
+    - String nome
+    - String descricao
+    - Gestor supervisor
+}
+
+class IA {
+    + analisarPadroes(List<CheckinEmocional> checkins) : List<Alerta>
+    + identificarRiscoBurnout(Squad squad) : boolean
+    + gerarRecomendacao(Squad squad) : String
+}
+
+Usuario <|-- Funcionario
+Usuario <|-- Gestor
+
+Usuario "1" --> "0..*" CheckinEmocional : realiza
+Funcionario "1" --> "0..2" Squad : participa de
+Gestor "1" --> "1..*" Squad : gerencia
+Squad "1" --> "1" Gestor : tem
+Squad "1" --> "1" Departamento : pertence
+Squad "1" --> "0..*" Sprint : executa
+Sprint "1" --> "1" Release : pertence a
+Dashboard "1" --> "1" Squad : monitora
+Alerta "0..*" --> "1" Gestor : enviado para
+IA --> CheckinEmocional : analisa
+IA --> Squad : avalia
+
+@enduml
+
+
