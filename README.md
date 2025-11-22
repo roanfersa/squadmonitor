@@ -49,6 +49,10 @@ Ao fazer login com esses usuários, você verá menus diferentes conforme o perf
 
 ### 5. Menus disponíveis
 
+- **Menu inicial**
+  - Login.
+  - Cadastro rápido de funcionário (cria um usuário do tipo `Funcionario` associado ao primeiro departamento/squad de exemplo).
+
 - **Menu Funcionário**
   - Realizar check-in emocional diário (estilo “Weather Report”):
     - Humor geral, energia, estresse, foco, sono e carga de trabalho (escala 1–5).
@@ -63,6 +67,8 @@ Ao fazer login com esses usuários, você verá menus diferentes conforme o perf
   - Ver alertas de risco emocional dos squads sob sua responsabilidade.
   - Gerar relatório de clima do time (resumo por squad + recomendação da IA).
   - Realizar o próprio check-in emocional (como qualquer usuário).
+  - Visualizar meus check-ins (histórico dos check-ins do próprio gestor).
+  - Gerar dados de simulação (cria vários check-ins artificiais para os membros dos squads, facilitando a visualização de riscos, alertas e recomendações da IA).
 
 ### 6. IA e regras de risco (simples)
 
